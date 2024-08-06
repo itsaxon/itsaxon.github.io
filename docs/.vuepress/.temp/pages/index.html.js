@@ -1,5 +1,5 @@
 import comp from "/workspaces/itsaxon.github.io/docs/.vuepress/.temp/pages/index.html.vue"
-const data = JSON.parse("{\"path\":\"/\",\"title\":\"Hello VuePress\",\"lang\":\"en-US\",\"frontmatter\":{},\"headers\":[],\"git\":{\"updatedTime\":1722924755000,\"contributors\":[{\"name\":\"itsaxon\",\"email\":\"18856655661@163.com\",\"commits\":4}]},\"filePathRelative\":\"README.md\"}")
+const data = JSON.parse("{\"path\":\"/\",\"title\":\"Hello VuePress\",\"lang\":\"en-US\",\"frontmatter\":{},\"headers\":[],\"git\":{\"updatedTime\":1722925339000,\"contributors\":[{\"name\":\"itsaxon\",\"email\":\"18856655661@163.com\",\"commits\":5}]},\"filePathRelative\":\"README.md\"}")
 export { comp, data }
 
 if (import.meta.webpackHot) {
