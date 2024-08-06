@@ -5,5 +5,5 @@ import { defineUserConfig } from 'vuepress'
 export default defineUserConfig({
   bundler: viteBundler(),
   theme: defaultTheme(),
-  base: "itsaxon.github.io",
+  base: "/",
 })
