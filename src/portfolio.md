@@ -3,21 +3,17 @@ home: true
 portfolio: true
 title: Portfolio Home
 icon: home
-name: Conan Edogawa
+name: LEO SHUO
 avatar: https://theme-hope-assets.vuejs.press/hero/conan.png
 
 titles:
-  - Genius young detective
-  - Lan’s childhood sweetheart
-  - The biggest rival of the black organization
+  - Java 后端开发
+  - 工作经验 4 年
+  - 成都搬砖
 
 footer: false
 ---
 
-## Description
+## 我的简介
 
-This is a portfolio home page demo.
-
-To use this layout, you should set `home: true` and `portfolio: true` in the page front matter.
-
-For related configuration docs, please see [portfolio homepage](https://theme-hope.vuejs.press/guide/blog/home.html#portfolio-style-homepage).
+这是我的简介
