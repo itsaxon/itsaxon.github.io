@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022"
+  },
+  "include": [
+    "itsaxon.github.io/.vuepress/**/*.ts",
+    "itsaxon.github.io/.vuepress/**/*.vue"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
