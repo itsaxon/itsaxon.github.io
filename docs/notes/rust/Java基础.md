@@ -1,3 +1,11 @@
+---
+title: Java基础
+icon: mdi:tooltip-text-outline
+author: Jason Liu
+createTime: 2024/08/07 04:33:14
+permalink: /article/hjh0c45l/
+sidebar: auto
+---
 # Java 基础
 
 - Rapid Retrieve

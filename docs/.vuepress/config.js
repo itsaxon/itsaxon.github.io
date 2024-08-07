@@ -1,42 +1,52 @@
-import { viteBundler } from '@vuepress/bundler-vite'
-import { defaultTheme } from '@vuepress/theme-default'
 import { defineUserConfig } from 'vuepress'
-import { backToTopPlugin } from '@vuepress/plugin-back-to-top'
-
+import { viteBundler } from '@vuepress/bundler-vite'
+import { plumeTheme } from 'vuepress-theme-plume'
 
 export default defineUserConfig({
-  bundler: viteBundler(),
-  theme: defaultTheme({
-    plugins: [backToTopPlugin()],
-    prevLinks: true,
-    nextLinks: true,
+  // 请不要忘记设置默认语言
+  lang: 'zh-CN',
+  theme: plumeTheme({
+    plugins: {
+      search: false
+    },
+    darkMode: 'dark', // 设置默认暗黑模式
     navbar: [
-      { text: 'Homepage', link: '/' },
-      { 
-        text: 'AboutMe', 
-        children: [
-          { text: 'Github', link: 'https://github.com/itsaxon' },
-          { text: 'Gitee', link: 'https://gitee.com/itsaxon' },
-          { text: 'Juejin', link: 'https://juejin.cn/user/1574156383554909' },
-        ]
-      }
+      { text: 'Homepage', link: '/' },  // 添加笔记功能导航链接
+      { text: 'Blog', link: '/blog/' },  // 添加笔记功能导航链接
+      { text: 'Notes', link: '/notes/' },  // 添加笔记功能导航链接
+      // 其他导航链接
     ],
-    sidebar: [
-      {
-        text: 'Personal Growth',
-        link: '/',
-        collapsible: true // 不折叠
-      },
-      {
-        text: "Core Java",
-        link: '/personal_growth/core_java/Java基础',
-        collapsible: false, // 不折叠
-        children: [
-          { text: "Java基础", link: "/personal_growth/core_java/Java基础" },
-          { text: "Java集合", link: "/personal_growth/core_java/Java集合" }
-        ]
-      }
-    ]
+    search: false, // 禁用主题中的搜索功能
+    profile: {
+      name: 'Jason Liu',
+      description: '描述文字',
+      avatar: 'https://prod-alicdn-community.kurobbs.com/newHead/aki/kakaluo.jpg',
+      circle: true, // 是否为圆形头像
+    },
+    notes: {
+      dir: '/notes/', // 声明所有笔记的目录
+      link: '/', // 声明所有笔记默认的链接前缀， 默认为 '/'
+      notes: [
+        {
+          dir: 'typescript', // 声明笔记的目录，相对于 `notes.dir`
+          link: '/typescript/', // 声明笔记的链接前缀
+          sidebar: [ // 配置侧边栏
+            {
+              text: '简介',
+              icon: 'mdi:language-typescript', // 侧边栏图标
+              items: ['foo'] // 简化写法，主题会自动补全为 `foo.md`
+            }
+          ]
+        },
+        {
+          dir: 'rust',
+          link: '/rust/',
+          sidebar: [
+            { text: '简介', items: ['foo'] }
+          ]
+        }
+      ]
+    },
   }),
-  title: "Leo's Personal Wiki",
+  bundler: viteBundler(),
 })

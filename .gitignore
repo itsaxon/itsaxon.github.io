@@ -4,3 +4,5 @@
 /docs/.vuepress/.cache
 # VuePress 需要的依赖包
 node_modules
+.vscode
+/docs/.vuepress/dist
