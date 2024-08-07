@@ -1,14 +1,19 @@
 import { viteBundler } from '@vuepress/bundler-vite'
 import { defaultTheme } from '@vuepress/theme-default'
 import { defineUserConfig } from 'vuepress'
+import { backToTopPlugin } from '@vuepress/plugin-back-to-top'
+
 
 export default defineUserConfig({
   bundler: viteBundler(),
   theme: defaultTheme({
+    plugins: [backToTopPlugin()],
+    prevLinks: true,
+    nextLinks: true,
     navbar: [
       { text: 'Homepage', link: '/' },
       { 
-        text: 'About ME', 
+        text: 'AboutMe', 
         children: [
           { text: 'Github', link: 'https://github.com/itsaxon' },
           { text: 'Gitee', link: 'https://gitee.com/itsaxon' },
@@ -20,7 +25,7 @@ export default defineUserConfig({
       {
         text: 'Personal Growth',
         link: '/',
-        collapsible: false // 不折叠
+        collapsible: true // 不折叠
       },
       {
         text: "Core Java",
