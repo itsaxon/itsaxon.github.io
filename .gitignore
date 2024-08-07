@@ -1,8 +1,0 @@
-# VuePress 默认临时文件目录
-/docs/.vuepress/.temp
-# VuePress 默认缓存目录
-/docs/.vuepress/.cache
-# VuePress 需要的依赖包
-node_modules
-.vscode
-/docs/.vuepress/dist
