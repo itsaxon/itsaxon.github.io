@@ -2,7 +2,7 @@ import { defineThemeConfig } from 'vuepress-theme-plume'
 
 export default defineThemeConfig({
 
- appearance: 'dark',
+ appearance: 'force-dark',
 
   // 导航栏
   navbar: [
@@ -12,12 +12,10 @@ export default defineThemeConfig({
   ],    
   // 个人资料
   profile: {
-    name: 'Leo',
-    description: '永远年轻，永远热泪盈眶',
+    name: 'leo_shuo',
     avatar: '/logo.png',
     circle: true, // 是否为圆形头像
-    location: '成都，中国',
-    organization: '十次方数科',
+    location: 'Chengdu,China',
   },
 
   // 笔记
