@@ -2,7 +2,9 @@ import { defineThemeConfig } from 'vuepress-theme-plume'
 
 export default defineThemeConfig({
 
- appearance: 'force-dark',
+ appearance: true,
+logo: '/logo.png',
+logoDark: '/logo-dark-l.png',
 
   // 导航栏
   navbar: [
@@ -10,6 +12,7 @@ export default defineThemeConfig({
     { text: 'Blog', link: '/blog/' },
     { text: 'Notes', link: '/notes/core/java/基础.md',activeMatch: '^/core/'},
   ],    
+
   // 个人资料
   profile: {
     name: 'leo_shuo',
@@ -49,6 +52,4 @@ export default defineThemeConfig({
     message: "Leo's Personal Wiki"
   },
   
-
-
 })

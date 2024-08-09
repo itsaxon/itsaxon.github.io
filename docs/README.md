@@ -22,7 +22,6 @@ config:
           wrap: true
         link: /blog/
         linkText: Leo's Blog
-        target: _blank
       -
         title: Docs
         icon: 
@@ -32,7 +31,6 @@ config:
           wrap: true
         link: /notes/core/java/基础.md
         linkText: Leo's Docs
-        target: _blank
   -
     type: image-text
     title: About / 关于
