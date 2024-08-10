@@ -2,15 +2,15 @@ import { defineThemeConfig } from 'vuepress-theme-plume'
 
 export default defineThemeConfig({
 
- appearance: true,
-logo: '/logo.png',
-logoDark: '/logo-dark-l.png',
+  appearance: false,
+
+  logo: '/logo.png',
 
   // 导航栏
   navbar: [
     { text: 'Homepage', link: '/' },
     { text: 'Blog', link: '/blog/' },
-    { text: 'Notes', link: '/notes/core/java/基础.md',activeMatch: '^/core/'},
+    { text: 'Notes', link: '/notes/core/java/Java基础.md',activeMatch: '^/core/'},
   ],    
 
   // 个人资料
@@ -31,10 +31,10 @@ logoDark: '/logo-dark-l.png',
             link: '/core/', // 声明笔记的链接前缀
             sidebar: [ // 配置侧边栏
                 {
-                    text: 'Java核心',
+                    text: 'Java 核心',
                     collapsed: false,
                     prefix: 'java',
-                    items: ['基础','集合']
+                    items: ['Java基础','Java集合']
                 },
                 {
                     text: '数据库',
