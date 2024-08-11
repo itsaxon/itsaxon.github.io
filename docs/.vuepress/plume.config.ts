@@ -4,7 +4,7 @@ export default defineThemeConfig({
 
   appearance: false,
 
-  logo: '/logo.png',
+  logo: '/assets/png/logo.png',
 
   // 导航栏
   navbar: [
@@ -15,10 +15,10 @@ export default defineThemeConfig({
 
   // 个人资料
   profile: {
-    name: 'leo_shuo',
-    avatar: '/logo.png',
+    name: 'Leo Shuo',
+    avatar: '/assets/png/logo.png',
     circle: true, // 是否为圆形头像
-    location: 'Chengdu,China',
+    location: 'Chengdu , China',
   },
 
   // 笔记
@@ -32,15 +32,33 @@ export default defineThemeConfig({
             sidebar: [ // 配置侧边栏
                 {
                     text: 'Java 核心',
-                    collapsed: false,
+                    icon: '/assets/svg/java.svg',
+                    collapsed: true,
                     prefix: 'java',
-                    items: ['Java基础','Java集合']
+                    items: ['Java基础']
                 },
                 {
                     text: '数据库',
-                    collapsed: false,
+                    icon: '/assets/svg/db.svg',
+                    collapsed: true,
                     prefix: 'database',
                     items: ['MySQL']
+                }
+                ,
+                {
+                    text: '框架',
+                    icon: '/assets/svg/frame.svg',
+                    collapsed: true,
+                    prefix: 'frame',
+                    items: ['Spring']
+                }
+                ,
+                {
+                    text: '中间件',
+                    icon: '/assets/svg/middleware.svg',
+                    collapsed: true,
+                    prefix: 'middle',
+                    items: ['RabbitMQ']
                 }
             ]
         },

@@ -1,6 +1,7 @@
 ---
 title: MySQL
-author: Leo
-createTime: 2024/08/08 16:18:05
-permalink: /core/bgceczxk/
+author: Leo Shuo
+createTime: 2024/08/11 05:54:45
+permalink: /core/8i7177ca/
 ---
+## MySQL
