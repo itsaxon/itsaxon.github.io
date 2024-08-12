@@ -10,7 +10,7 @@ export default defineThemeConfig({
   navbar: [
     { text: 'Homepage', link: '/' },
     { text: 'Blog', link: '/blog/' },
-    { text: 'Notes', link: '/notes/core/java/Java基础.md',activeMatch: '^/core/'},
+    { text: 'Notes', link: '/notes/core/java/基础.md',activeMatch: '^/core/'},
   ],    
 
   // 个人资料
@@ -35,14 +35,25 @@ export default defineThemeConfig({
                     icon: '/assets/svg/java.svg',
                     collapsed: true,
                     prefix: 'java',
-                    items: ['Java基础']
+                    items: [
+                      '基础',
+                      '集合框架',
+                      '并发编程',
+                      '虚拟机',
+                      'IO与NIO',
+                      '设计模式',
+                      '新特性与高级应用',
+                      '实践与代码规范',
+                      '开发工具',
+                      '社区与资源',
+                    ]
                 },
                 {
                     text: '数据库',
                     icon: '/assets/svg/db.svg',
                     collapsed: true,
                     prefix: 'database',
-                    items: ['MySQL']
+                    items: ['MySQL','Redis']
                 }
                 ,
                 {
@@ -50,7 +61,12 @@ export default defineThemeConfig({
                     icon: '/assets/svg/frame.svg',
                     collapsed: true,
                     prefix: 'frame',
-                    items: ['Spring']
+                    items: [
+                      'Spring',
+                      'SpringBoot',
+                      'SpringCloud',
+                      'Mybatis',
+                    ]
                 }
                 ,
                 {
@@ -58,8 +74,50 @@ export default defineThemeConfig({
                     icon: '/assets/svg/middleware.svg',
                     collapsed: true,
                     prefix: 'middle',
-                    items: ['RabbitMQ']
-                }
+                    items: [
+                      'RabbitMQ',
+                      'Nginx',
+                      'ElasticSearch',
+                      'Aliware',
+                    ]
+                },
+                {
+                  text: '性能优化',
+                  icon: '/assets/svg/optimization.svg',
+                  collapsed: true,
+                  prefix: 'optimization',
+                  items: [
+                    '分布式系统',
+                    '高并发',
+                  ]
+              },
+              {
+                text: '操作系统',
+                icon: '/assets/svg/computer.svg',
+                collapsed: true,
+                prefix: 'computer',
+                items: [
+                  'Linux',
+                ]
+            },
+            {
+              text: '大前端技术',
+              icon: '/assets/svg/front.svg',
+              collapsed: true,
+              prefix: 'front',
+              items: [
+                'Ajax',
+              ]
+          },
+          {
+            text: '第三方类库',
+            icon: '/assets/svg/third.svg',
+            collapsed: true,
+            prefix: 'third',
+            items: [
+              'Apollo',
+            ]
+        },
             ]
         },
     ]

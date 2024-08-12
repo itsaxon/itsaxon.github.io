@@ -31,7 +31,7 @@ config:
           width: 40px
           heght: 40px
           wrap: true
-        link: /notes/core/java/Java基础.md
+        link: /notes/core/java/基础.md
         linkText: Leo's Notes
   -
     type: image-text
