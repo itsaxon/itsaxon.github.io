@@ -7,7 +7,8 @@ export default defineUserConfig({
   lang: 'zh-CN',
   description: "Leo's Personal Wiki",
   head: [
-    ['link', { rel: 'icon', href: '/assets/png/logo.png' }]
+    ['link', { rel: 'icon', href: '/assets/png/logo.png' }],
+    ['meta', { name: 'google-site-verification', content: 'TmrCiMyG3v0YvMY5eINEzeuen6QvhCD5_B9HfU_-EsA' }]
   ],
   theme: plumeTheme({
     plugins: {
