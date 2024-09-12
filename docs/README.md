@@ -8,31 +8,48 @@ config:
     tintPlate: 58,164,220
     hero:
       name: Leo's Personal Wiki
-      text: 👋 Hi there, I'm Leo! I am a backend developer and currently working at Chengdu. I enjoy programming and all creative activities.
+      text: 👋🏻 Hi there, I'm Liu ShuoZhen! I am a backend developer and currently working at Chengdu. I enjoy programming and all creative activities.
   
   -
     type: features
     features:
       -
-        title: Blog
-        details: 一些技术相关的分享，包含前后端亦或是书籍的理解、职业人生的感悟。
-        icon: 
-          src: /assets/svg/blog-website.svg
-          width: 35px
-          heght: 35px
-          wrap: true
+        title: Echoes of Code
+        details: 我的博客，记录着技术与生活，所思所想。
+        icon: 📝
         link: /blog/
         linkText: Leo's Blog
       -
-        title: Notes
-        details: Java 语言的相关学习记录，包含核心、数据库、框架、中间件等。
-        icon: 
-          src: /assets/svg/bible-book.svg
-          width: 40px
-          heght: 40px
-          wrap: true
+        title: Java Learning Journal
+        details: 我的 Java 学习日志，包含 Java 核心知识，技术沉淀区域。
+        icon: 📚
         link: /notes/core/java/基础.md
         linkText: Leo's Notes
+      -
+        title: The Journey of Me
+        details: 我的个人简历，包含技术栈、项目经历等。
+        icon: 👨‍💻
+        link: /notes/resume.md
+        linkText: Leo's Info
+
+      -
+        title: Blog - 个人博客
+        details: 基于 VuePress v2.0.0 搭配开源主题 vuepress-theme-plume 创建的个人博客网站
+        icon: 🖥️
+        link: https://github.com/itsaxon/itsaxon.github.io
+        linkText: Leo's Blog Project
+      -
+        title: ChatNova - 智语新境
+        details: 基于 SpringBoot 开发的智能聊天后端项目，集成 ChatGPT等多家 AI 机器人
+        icon: 🤖
+        link: https://github.com/itsaxon/itsaxon.github.io
+        linkText: Leo's AI Project
+      -
+        title: EnergexLink - 能捷互连
+        details: 基于 SpringBoot 开发的新能源充电聚合后端项目，整合多运营商，支持中电联等多协议
+        icon: 🌍 
+        link: https://github.com/itsaxon/itsaxon.github.io
+        linkText: Leo's Charging Project
   -
     type: image-text
     title: About / 关于
@@ -40,13 +57,11 @@ config:
     image: 
     list:
       -
-        description: 我叫刘硕镇 (Leo)，1998 年出生于安徽池州的一个小城市。好编程，阅读，以及一切创造类活动。2020 年起学习编程至今。
+        description: 我叫刘硕镇 (Leo)，1998 年出生于安徽池州的一个小城市。热爱编程，阅读，以及一切创造类活动。2020 工作至今四年。
       -
-        description: 2020 年大学毕业，进入编程行业，曾在常州新能源公司做 Java 开发，2022 来到成都，目前在十次方数科搬砖。
+        description: 2020 年大学毕业，专科非科班，本着热爱和前程加入编程行业，毕业后在江苏做了一年半 Java 开发，2022 年来到成都。
       -
-        description: 小时候的理想是成为一名程序员，用技术改变世界。现在的理想是用技术创造价值 —— 做出有人觉得好用的产品或服务。
+        description: 年少时候的理想是成为一名技术大牛，用技术改变世界。现在的理想是用技术创造价值，做出为人称道的产品或服务。
       -
-        description: 做这个博客 / 知识库的原因是我喜欢写作和思考，并且希望把我的思考和经验分享给所有人。
-      -
-        description: 你可以免费阅读本博客 / 知识库的所有内容，也欢迎你通过不同的渠道进行赞赏。最简单的赞赏方式是发送一封感谢信到我的 Email (itsachsen@gmail.com)
+        description: 做这个博客 & 知识库的原因是我喜欢写作和思考，希望通过这种方式督促成长，并且希望把我的思考和经验分享给所有人。
 ---
