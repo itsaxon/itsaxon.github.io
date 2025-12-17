@@ -1,5 +1,6 @@
 {
   "name": "itsaxon.github.io",
+  "packageManager": "pnpm@10.25.0",
   "description": "itsaxon.github.io",
   "version": "1.0.0",
   "license": "MIT",
