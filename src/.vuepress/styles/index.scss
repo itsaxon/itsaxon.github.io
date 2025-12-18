@@ -1,1 +1,7 @@
 // place your custom styles here
+// 在移动端也显示导航项，移除 hide-in-mobile 类的影响
+@media (max-width: 719px) {
+    .vp-nav-item.hide-in-mobile {
+      display: block !important;
+    }
+}

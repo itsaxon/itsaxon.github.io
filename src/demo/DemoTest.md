@@ -2,7 +2,7 @@
 title: DemoTest
 navbar: false
 icon: fa6-brands:markdown
-order: 2
+order: 1
 category:
   - 使用指南
 tag:

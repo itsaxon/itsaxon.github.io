@@ -1,7 +1,7 @@
 ---
 home: true
 # icon: ic:sharp-home
-title: Home
+title: JavaHub
 bgImageStyle:
   background-attachment: fixed
 heroText: </>

@@ -16,6 +16,8 @@ export default hopeTheme({
 
   docsDir: "src",
 
+  favicon: "/favicon.ico", 
+
   // 导航栏
   navbar,
 
