@@ -1,6 +1,6 @@
 ---
 title: Demo2Test
-navbar: false
+# navbar: false
 icon: fa6-brands:markdown
 order: 2
 category:

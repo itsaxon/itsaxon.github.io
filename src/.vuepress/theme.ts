@@ -87,5 +87,10 @@ export default hopeTheme({
       prefix: "fa6-solid:",
     },
 
+    git: {
+      updatedTime: false,
+      contributors: false,
+    },
+
   },
 });
