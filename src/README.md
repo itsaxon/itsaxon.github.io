@@ -9,12 +9,12 @@ tagline:
 actions:
   - text: 
     icon: pixelarticons:lightbulb
-    link: ./demo/
+    link: ./blog/blog
     type: primary
 
   - text: 
     icon: dinkie-icons:alien-monster
-    link: ./demo/
+    link: ./doc/doc
 
 copyright: false
 ---

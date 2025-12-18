@@ -5,12 +5,12 @@ import sidebar from "./sidebar.js";
 
 export default hopeTheme({
 
+  print: false,
+
   author: {
     name: "LiuShuoZhen",
     url: "itsaxon.github.io",
   },
-
-  // repo: "itsaxon/itsaxon.github.io",
 
   darkmode: "enable",
 
@@ -27,16 +27,6 @@ export default hopeTheme({
   // 页脚
   footer: "",
   displayFooter: false,
-
-  // 加密配置
-  encrypt: {
-    config: {
-      "/demo/encrypt.html": {
-        hint: "Password: 1234",
-        password: "1234",
-      },
-    },
-  },
 
   // 多语言配置
   metaLocales: {
@@ -79,6 +69,12 @@ export default hopeTheme({
   },
 
   plugins: {
+
+    blog: {
+      // 只把 /blog/ 下的页面当作文章
+      filter: ({ path }) => path.startsWith("/blog/"),
+    },
+
     components: {
       components: ["Badge", "VPCard"],
     },
