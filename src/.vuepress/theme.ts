@@ -7,6 +7,9 @@ export default hopeTheme({
 
   print: false,
 
+  // 禁用面包屑
+  breadcrumb: false,
+
   author: {
     name: "LiuShuoZhen",
     url: "itsaxon.github.io",
@@ -15,8 +18,6 @@ export default hopeTheme({
   darkmode: "enable",
 
   docsDir: "src",
-
-  favicon: "/favicon.ico", 
 
   // 导航栏
   navbar,
@@ -69,11 +70,6 @@ export default hopeTheme({
   },
 
   plugins: {
-
-    blog: {
-      // 只把 /blog/ 下的页面当作文章
-      filter: ({ path }) => path.startsWith("/blog/"),
-    },
 
     components: {
       components: ["Badge", "VPCard"],

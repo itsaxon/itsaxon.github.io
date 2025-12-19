@@ -5,38 +5,3 @@
       display: block !important;
     }
 }
-/* Blog 首页 Hero 背景 —— 强制覆盖默认图片 */
-.vp-blog-hero {
-  position: relative;
-
-  background-image:
-    radial-gradient(
-      circle at 50% 30%,
-      rgba(126, 200, 227, 0.65) 0%,
-      rgba(91, 155, 213, 0.45) 35%,
-      rgba(57, 115, 183, 0.4) 60%,
-      rgba(39, 70, 144, 0.95) 100%
-    ),
-    linear-gradient(
-      135deg,
-      #b8e0ff 0%,
-      #6fa8dc 45%,
-      #274690 100%
-    ) !important;
-
-  background-size: cover !important;
-  background-position: center !important;
-  background-attachment: fixed;
-}
-
-/* 科技感点阵层（recoluan 风格） */
-.vp-blog-hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1px);
-  background-size: 3px 3px;
-  opacity: 0.18;
-  pointer-events: none;
-}

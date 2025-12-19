@@ -1,6 +1,5 @@
 ---
 home: true
-# icon: ic:sharp-home
 title: JavaHub
 bgImageStyle:
   background-attachment: fixed
@@ -9,12 +8,12 @@ tagline:
 actions:
   - text: 
     icon: pixelarticons:lightbulb
-    link: ./blog/blog
+    link: /knowledge_base/knowledge_base
     type: primary
 
   - text: 
     icon: dinkie-icons:alien-monster
-    link: ./doc/doc
+    link: /knowledge_base/缺陷修复/缺陷1
 
 copyright: false
 ---
