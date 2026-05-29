@@ -25,6 +25,13 @@ export default sidebar({
       collapsible: true,
     },
     {
+      text: "框架",
+      prefix: "knowledge_base/框架/",
+      link: "knowledge_base/框架/",
+      children: "structure",
+      collapsible: true,
+    },
+    {
       text: "缺陷修复",
       prefix: "knowledge_base/缺陷修复/",
       link: "knowledge_base/缺陷修复/",

@@ -4,11 +4,14 @@ index: false
 ---
 
 ## Java 核心
-- [Java 基础](/java_interview/Java核心/Java基础) {.card}
-- [集合](/java_interview/Java核心/集合) {.card}
+- [Java 基础](./Java核心/Java基础) {.card}
+- [集合](./Java核心/集合) {.card}
 
 ## 数据库
-- [MySQL](/java_interview/数据库/MySQL) {.card}
+- [MySQL](./数据库/MySQL) {.card}
+
+## 框架
+- [SpringBoot](./框架/SpringBoot) {.card}
 
 ## 缺陷修复
-- [缺陷1](/java_interview/缺陷修复/缺陷1) {.card}
+- [缺陷1](./缺陷修复/缺陷1) {.card}
