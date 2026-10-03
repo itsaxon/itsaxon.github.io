@@ -82,8 +82,8 @@ test('search dialog supports keyboard, close and result navigation', async ({ pa
 
 test('Java topics, empty states and advanced notes', async ({ page, isMobile }) => {
   await page.goto('/java/');
-  await expect(page.locator('.topic-index > a')).toHaveCount(7);
-  await page.locator('.topic-index > a').filter({ hasText: 'Spring 生态' }).click();
+  await expect(page.locator('.topic-index .topic-spotlight a')).toHaveCount(7);
+  await page.locator('.topic-index .topic-spotlight a').filter({ hasText: 'Spring 生态' }).click();
   await expect(page.getByRole('heading', { name: '这个主题，还在整理。' })).toBeVisible();
   await page.goto('/java/advanced/');
   await expect(page.locator('.page-articles .article')).toHaveCount(3);
@@ -102,7 +102,7 @@ test('Java topics, empty states and advanced notes', async ({ page, isMobile }) 
 
 test('daily report sections, tables, download and missing page', async ({ page }) => {
   await page.goto('/daily/');
-  await page.locator('.issue-archive-list > a').click();
+  await page.locator('.issue-archive-list .list-entrance > a').click();
   await expect(page.locator('.report-body > section')).toHaveCount(8);
   await expect(page.locator('.report-table table')).toHaveCount(3);
   await page.locator('.report-outline nav a').last().click();
@@ -111,7 +111,7 @@ test('daily report sections, tables, download and missing page', async ({ page }
   await expect(page.locator('#report-8')).toBeInViewport();
   const download = page.waitForEvent('download');
   await page.getByRole('link', { name: '下载原文' }).click();
-  expect((await download).suggestedFilename()).toContain('2026-09-27');
+  expect((await download).suggestedFilename()).toContain('2026-10-03');
   const response = await page.goto('/articles/nonexistent/');
   expect(response?.status()).toBe(404);
   await expect(page.getByRole('heading', { name: '这一页，暂时找不到。' })).toBeVisible();

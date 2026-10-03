@@ -4,6 +4,60 @@ import { createContext, useContext } from 'react';
 import type { ReactNode, ButtonHTMLAttributes } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import Magnet from './react-bits/magnet';
+import AnimatedContent from './react-bits/animated-content';
+import SpotlightCard from './react-bits/spotlight-card';
+import ClickSpark from './react-bits/click-spark';
+import { useMobileEffectsDisabled, useTheme } from '@/lib/preferences';
+
+function useQuietEffects() {
+  const reduce = useAnimationReduced();
+  const mobile = useMobileEffectsDisabled();
+  return reduce || mobile;
+}
+export function ListEntrance({ children, index = 0 }: { children: ReactNode; index?: number }) {
+  const disabled = useQuietEffects();
+  return disabled ? (
+    <div className="list-entrance">{children}</div>
+  ) : (
+    <AnimatedContent
+      className="list-entrance"
+      distance={16}
+      duration={0.5}
+      delay={Math.min(index, 4) * 0.07}
+      animateOpacity
+    >
+      {children}
+    </AnimatedContent>
+  );
+}
+export function TopicSpotlight({ children }: { children: ReactNode }) {
+  const disabled = useQuietEffects();
+  return disabled ? (
+    <div className="topic-spotlight">{children}</div>
+  ) : (
+    <SpotlightCard className="topic-spotlight" spotlightColor="rgba(223, 146, 117, 0.15)">
+      {children}
+    </SpotlightCard>
+  );
+}
+export function SparkControls({ children }: { children: ReactNode }) {
+  const disabled = useQuietEffects();
+  const dark = useTheme() === 'dark';
+  return disabled ? (
+    <div className="header-tools">{children}</div>
+  ) : (
+    <ClickSpark
+      className="header-tools"
+      sparkColor={dark ? '#df9275' : '#b65a40'}
+      sparkCount={6}
+      sparkSize={5}
+      sparkRadius={14}
+      duration={300}
+    >
+      {children}
+    </ClickSpark>
+  );
+}
 
 export const MotionPreference = createContext<boolean | null>(null);
 export function useAnimationReduced() {

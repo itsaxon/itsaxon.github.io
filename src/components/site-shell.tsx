@@ -13,7 +13,7 @@ import {
   useSystemReducedMotion,
 } from '@/lib/preferences';
 import { MarginMark } from './margin-mark';
-import { MotionPreference } from './motion-ui';
+import { MotionPreference, SparkControls } from './motion-ui';
 import { Link } from './navigation';
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogClose } from './ui/dialog';
 
@@ -178,7 +178,7 @@ function Header() {
               ))}
             </nav>
           </div>
-          <div className="header-tools">
+          <SparkControls>
             <SearchDialog />
             <span className="tool-line" />
             <button
@@ -196,7 +196,7 @@ function Header() {
             >
               {menu ? <X size={23} /> : <List size={23} />}
             </button>
-          </div>
+          </SparkControls>
         </div>
       </header>
     </>

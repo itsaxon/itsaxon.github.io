@@ -12,6 +12,7 @@ interface MagnetProps extends HTMLAttributes<HTMLDivElement> {
   padding?: number;
   disabled?: boolean;
   magnetStrength?: number;
+  maxOffset?: number;
   wrapperClassName?: string;
   innerClassName?: string;
 }
@@ -20,6 +21,7 @@ export default function Magnet({
   padding = 24,
   disabled = false,
   magnetStrength = 5,
+  maxOffset = Infinity,
   wrapperClassName = '',
   innerClassName = '',
   ...props
@@ -40,8 +42,8 @@ export default function Magnet({
         const dx = event.clientX - left - width / 2,
           dy = event.clientY - top - height / 2;
         if (Math.abs(dx) < width / 2 + padding && Math.abs(dy) < height / 2 + padding) {
-          x.set(dx / magnetStrength);
-          y.set(dy / magnetStrength);
+          x.set(Math.max(-maxOffset, Math.min(maxOffset, dx / magnetStrength)));
+          y.set(Math.max(-maxOffset, Math.min(maxOffset, dy / magnetStrength)));
         }
       }}
       onPointerLeave={() => {

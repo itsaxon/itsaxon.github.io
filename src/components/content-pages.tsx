@@ -13,39 +13,37 @@ import {
   CaretDown,
   CalendarBlank,
 } from '@phosphor-icons/react';
-import {
-  articles,
-  javaTopics,
-  issues,
-  BLOG_PAGE_SIZE,
-  articleUrl,
-} from '@/lib/content';
+import { articles, javaTopics, issues, BLOG_PAGE_SIZE, articleUrl } from '@/lib/content';
 import { Link } from './navigation';
-import { Reveal } from './motion-ui';
+import { Reveal, ListEntrance, TopicSpotlight } from './motion-ui';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { dailyExample } from '@/lib/generated-content';
-const reportMetadata = {
-  date: dailyExample.match(/发布日期：\s*(.+)/)?.[1].trim(),
-  type: dailyExample.match(/报告类型：\s*(.+)/)?.[1].trim(),
-  range: dailyExample.match(/数据范围：\s*(.+)/)?.[1].trim(),
-};
-
-const reportSections = dailyExample
-  .split(/^# /m)
-  .slice(2)
-  .map((part, index) => {
-    const split = part.indexOf('\n');
-    return {
-      id: `report-${index + 1}`,
-      title: part.slice(0, split).trim(),
-      body: part
-        .slice(split + 1)
-        .replace(/\n---\s*$/, '')
-        .trim(),
-    };
-  });
-function FullDailyReport({ navigate }: { navigate: Navigate }) {
+import { dailyMarkdown } from '@/lib/generated-content';
+import Magnet from './react-bits/magnet';
+import { useMobileEffectsDisabled } from '@/lib/preferences';
+import { useSettings } from './site-shell';
+function getReportSections(markdown: string) {
+  const content = markdown.replace(/^# .+\r?\n/, '');
+  const heading = content.match(/^(#{1,2}) /m)?.[1] || '#';
+  return content
+    .split(new RegExp(`^${heading} `, 'm'))
+    .slice(1)
+    .map((part, index) => {
+      const split = part.indexOf('\n');
+      return {
+        id: `report-${index + 1}`,
+        title: part.slice(0, split).trim(),
+        body: part
+          .slice(split + 1)
+          .replace(/\n---\s*$/, '')
+          .trim(),
+      };
+    });
+}
+function FullDailyReport({ navigate, markdown }: { navigate: Navigate; markdown: string }) {
+  const reportSections = getReportSections(markdown);
+  const mobileEffectsDisabled = useMobileEffectsDisabled();
+  const { playing } = useSettings();
   return (
     <div className="report-layout">
       <article className="report-body">
@@ -80,12 +78,18 @@ function FullDailyReport({ navigate }: { navigate: Navigate }) {
       </article>
       <aside className="report-outline">
         <details open>
-          <summary>本期目录 · 八个栏目</summary>
+          <summary>本期目录</summary>
           <nav aria-label="日报栏目目录">
             {reportSections.map((s) => (
-              <a key={s.id} href={`#${s.id}`}>
-                {s.title}
-              </a>
+              <Magnet
+                key={s.id}
+                disabled={mobileEffectsDisabled || !playing}
+                magnetStrength={18}
+                maxOffset={3}
+                wrapperClassName="report-nav-magnet"
+              >
+                <a href={`#${s.id}`}>{s.title}</a>
+              </Magnet>
             ))}
           </nav>
         </details>
@@ -110,27 +114,29 @@ export function ArticleList({
 }) {
   return (
     <div className={compact ? 'compact-list' : 'page-articles'}>
-      {items.map((a) => (
-        <Link
-          className={compact ? 'compact-item' : 'article'}
-          key={a.id}
-          to={articleUrl(a)}
-          navigate={navigate}
-        >
-          <div className="article-meta">
-            <span>{a.type}</span>
-            <span>
-              <time dateTime={a.publishedAt}>{a.publishedAt.replaceAll('-', '.')}</time>
-            </span>
-          </div>
-          <h2>{a.title}</h2>
-          {!compact && <p>{a.desc}</p>}
-          {!compact && (
-            <span className="read-link">
-              阅读全文 <ArrowUpRight size={18} />
-            </span>
-          )}
-        </Link>
+      {items.map((a, index) => (
+        <ListEntrance key={a.id} index={index}>
+          <Link
+            className={compact ? 'compact-item' : 'article'}
+            key={a.id}
+            to={articleUrl(a)}
+            navigate={navigate}
+          >
+            <div className="article-meta">
+              <span>{a.type}</span>
+              <span>
+                <time dateTime={a.publishedAt}>{a.publishedAt.replaceAll('-', '.')}</time>
+              </span>
+            </div>
+            <h2>{a.title}</h2>
+            {!compact && <p>{a.desc}</p>}
+            {!compact && (
+              <span className="read-link">
+                阅读全文 <ArrowUpRight size={18} />
+              </span>
+            )}
+          </Link>
+        </ListEntrance>
       ))}
     </div>
   );
@@ -576,15 +582,17 @@ export function JavaPage({
                     (a) => a.category === 'Java' && a.topic === t.id,
                   ).length;
                   return (
-                    <Link key={t.id} to={`/java/topics/${t.id}`} navigate={navigate}>
-                      <span className="topic-index-number">{String(i + 1).padStart(2, '0')}</span>
-                      <div>
-                        <h2>{t.name}</h2>
-                        <p>{t.description}</p>
-                      </div>
-                      <span className="topic-count">{count ? `${count} 篇笔记` : '待整理'}</span>
-                      <ArrowUpRight size={20} />
-                    </Link>
+                    <TopicSpotlight key={t.id}>
+                      <Link to={`/java/topics/${t.id}`} navigate={navigate}>
+                        <span className="topic-index-number">{String(i + 1).padStart(2, '0')}</span>
+                        <div>
+                          <h2>{t.name}</h2>
+                          <p>{t.description}</p>
+                        </div>
+                        <span className="topic-count">{count ? `${count} 篇笔记` : '待整理'}</span>
+                        <ArrowUpRight size={20} />
+                      </Link>
+                    </TopicSpotlight>
                   );
                 })}
               </div>
@@ -698,18 +706,19 @@ function DailyOverview({ navigate, params }: { navigate: Navigate; params: URLSe
       </div>
       {filtered.length ? (
         <div className="issue-archive-list">
-          {filtered.slice((page - 1) * 12, page * 12).map((i) => (
-            <Link key={i.date} to={`/daily/${i.date}`} navigate={navigate}>
-              <time dateTime={i.date}>
-                <span>{i.date.slice(8)}</span>
-                {i.date.slice(0, 7).replace('-', ' / ')}
-              </time>
-              <div>
-                <h2>{i.title}</h2>
-                <p>{i.summary}</p>
-              </div>
-              <ArrowUpRight size={23} />
-            </Link>
+          {filtered.slice((page - 1) * 12, page * 12).map((i, index) => (
+            <ListEntrance key={i.date} index={index}>
+              <Link key={i.date} to={`/daily/${i.date}`} navigate={navigate}>
+                <time dateTime={i.date}>
+                  <span>{i.date.slice(8)}</span>
+                  {i.date.slice(0, 7).replace('-', ' / ')}
+                </time>
+                <div>
+                  <h2>{i.title}</h2>
+                </div>
+                <ArrowUpRight size={23} />
+              </Link>
+            </ListEntrance>
           ))}
         </div>
       ) : (
@@ -751,6 +760,12 @@ export function DailyPage({
     entries = issue.articleIds
       .map((id) => articles.find((a) => a.id === id))
       .filter((entry): entry is Article => Boolean(entry));
+  const markdown = dailyMarkdown[issue.date] || '';
+  const reportMetadata = {
+    date: markdown.match(/发布日期：\s*(.+)/)?.[1].trim() || issue.date,
+    type: markdown.match(/报告类型：\s*(.+)/)?.[1].trim(),
+    range: markdown.match(/数据范围：\s*(.+)/)?.[1].trim(),
+  };
   if (issue.supplied)
     return (
       <section className="content-page daily-page supplied-daily">
@@ -775,11 +790,11 @@ export function DailyPage({
           <span>发布日期：{reportMetadata.date}</span>
           <span>报告类型：{reportMetadata.type}</span>
           <span>数据范围：{reportMetadata.range}</span>
-          <a href="/reports/2026-09-27-科技情报日报.md" download>
+          <a href={`/reports/${issue.date}.md`} download>
             下载原文 ↗
           </a>
         </div>
-        <FullDailyReport navigate={navigate} />
+        <FullDailyReport navigate={navigate} markdown={markdown} />
       </section>
     );
   return (

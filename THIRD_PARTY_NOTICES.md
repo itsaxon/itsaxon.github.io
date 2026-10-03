@@ -1,4 +1,6 @@
-# React Bits (Magnet, Dither Veil and Dot Grid TS-TW, landing navbar)
+# React Bits (TS-TW components and landing navbar)
+
+Added TS-TW components: [Spotlight Card](https://github.com/DavidHDev/react-bits/blob/main/src/ts-tailwind/Components/SpotlightCard/SpotlightCard.tsx), [Animated Content](https://github.com/DavidHDev/react-bits/blob/main/src/ts-tailwind/Animations/AnimatedContent/AnimatedContent.tsx), and [Click Spark](https://github.com/DavidHDev/react-bits/blob/main/src/ts-tailwind/Animations/ClickSpark/ClickSpark.tsx).
 
 MIT + Commons Clause License Condition v1.0
 

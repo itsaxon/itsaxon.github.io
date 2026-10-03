@@ -1,4 +1,4 @@
-import { journalMarkdown } from './generated-content';
+import { journalMarkdown, dailyMarkdown } from './generated-content';
 export type Category = '博客' | 'Java' | 'AI';
 export interface ArticleSource {
   id?: string;
@@ -363,15 +363,15 @@ export const javaTopics = [
   { id: 'database', name: '数据库', description: '索引、事务与数据访问' },
   { id: 'distributed', name: '分布式系统', description: '幂等、重试与服务协作' },
 ];
-export const issues: DailyIssue[] = [
-  {
-    date: '2026-09-27',
-    title: '今日全球商业科技情报日报',
+export const issues: DailyIssue[] = Object.entries(dailyMarkdown)
+  .map(([date, markdown]) => ({
+    date,
+    title: markdown.match(/^#\s+(.+)$/m)?.[1].trim() || '科技情报日报',
     summary: '从重大事件到产业动态、开发者关注与数据指标，八个栏目记录一天的科技与商业变化。',
     articleIds: [],
     supplied: true,
-  },
-];
+  }))
+  .sort((a, b) => b.date.localeCompare(a.date));
 export const HOME_LIMIT = 2;
 export const BLOG_PAGE_SIZE = 4;
 export function articleUrl(article: Pick<Article, 'id'>) {
