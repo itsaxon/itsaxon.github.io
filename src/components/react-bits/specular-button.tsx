@@ -167,8 +167,8 @@ const SpecularButton = ({
     const fx = fxRef.current;
     if (!btn || !fx) return;
 
-    const dpr = window.devicePixelRatio || 1;
-    const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: true, dpr });
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: false, dpr });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
     gl.enable(gl.BLEND);
@@ -221,6 +221,9 @@ const SpecularButton = ({
     // back to a slow sweep when the pointer hasn't moved yet.
     let pointerAngle: number | null = null;
     let proximityT = 0;
+    let angle = 2.4;
+    let idleAngle = 2.4;
+    let bright = propsRef.current.autoAnimate ? 1 : 0;
     const onPointerMove = (e: PointerEvent) => {
       const rect = btn.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
@@ -234,6 +237,9 @@ const SpecularButton = ({
         const nx = (e.clientX - cx) / (rect.width / 2);
         const ny = (cy - e.clientY) / (rect.height / 2);
         pointerAngle = Math.atan2(2 / rect.height, -2 / rect.width) + nx * 0.3 + ny * 0.15;
+        // Hover feedback must be immediate even when other artwork lowers FPS.
+        angle = pointerAngle;
+        bright = 1;
       } else {
         pointerAngle = Math.atan2(cy - e.clientY, e.clientX - cx);
       }
@@ -241,10 +247,8 @@ const SpecularButton = ({
       proximityT = t * t * (3 - 2 * t);
     };
     window.addEventListener('pointermove', onPointerMove);
+    btn.addEventListener('pointerenter', onPointerMove);
 
-    let angle = 2.4;
-    let idleAngle = 2.4;
-    let bright = 0;
     let last = performance.now();
     let raf = 0;
 
@@ -253,7 +257,9 @@ const SpecularButton = ({
 
     const update = (now: number) => {
       raf = requestAnimationFrame(update);
-      const dt = Math.min((now - last) / 1000, 0.05);
+      // Use elapsed time, rather than slowing the animation below 20 FPS.
+      // A background tab resumes from a fresh timestamp via visibilitychange.
+      const dt = Math.max(0, (now - last) / 1000);
       last = now;
       const p = propsRef.current;
 
@@ -282,11 +288,17 @@ const SpecularButton = ({
       renderer.render({ scene: mesh });
     };
     raf = requestAnimationFrame(update);
+    const onVisibilityChange = () => {
+      last = performance.now();
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
 
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
       window.removeEventListener('pointermove', onPointerMove);
+      btn.removeEventListener('pointerenter', onPointerMove);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       if (gl.canvas.parentNode === fx) fx.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
@@ -320,3 +332,4 @@ const SpecularButton = ({
 };
 
 export default SpecularButton;
+
