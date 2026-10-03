@@ -67,3 +67,6 @@ Dither Veil TS-TW: https://github.com/DavidHDev/react-bits/blob/main/src/ts-tail
 Particle Text TS-TW: https://github.com/DavidHDev/react-bits/blob/main/src/ts-tailwind/TextAnimations/ParticleText/ParticleText.tsx . Adapted for two-line Chinese headings and denser, left-aligned particles. Dither Veil matte made transparent to reveal the static page dot field.
 
 Tech Text and Specular Button TS-TW: https://github.com/DavidHDev/react-bits/tree/main/src/ts-tailwind . Adapted for Chinese headings, local palette, accessible heading text and reading navigation.
+
+
+Animated List TS-TW: https://github.com/DavidHDev/react-bits/blob/main/src/ts-tailwind/Components/AnimatedList/AnimatedList.tsx . Adapted for native links, page scrolling, restrained entrance and hover motion; disabled for mobile and reduced motion.

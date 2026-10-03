@@ -129,7 +129,6 @@ export function ArticleList({
               </span>
             </div>
             <h2>{a.title}</h2>
-            {!compact && <p>{a.desc}</p>}
             {!compact && (
               <span className="read-link">
                 阅读全文 <ArrowUpRight size={18} />
@@ -164,7 +163,7 @@ export function HomeContent({ navigate }: { navigate: Navigate }) {
       </Reveal>
       <Reveal className="portal-row java-portal">
         <div className="portal-heading">
-          <h3>Java 知识</h3>
+          <h3>Java 知识库</h3>
           <Link className="portal-link" to="/java" navigate={navigate}>
             查看全部 <ArrowRight size={18} />
           </Link>
@@ -330,7 +329,7 @@ export function BlogPage({ navigate, params }: { navigate: Navigate; params: URL
               <MagnifyingGlass size={18} />
               <input
                 aria-label="搜索博客"
-                placeholder="在博客中搜索"
+                placeholder="搜索"
                 value={query}
                 onChange={(e) => update({ q: e.target.value, page: '' })}
               />
@@ -464,13 +463,6 @@ export function JavaDirectory({
           >
             面试专题
           </Link>
-          <Link
-            className={mode === 'updates' ? 'current' : ''}
-            to="/java/updates"
-            navigate={navigate}
-          >
-            最近更新
-          </Link>
         </div>
       </div>
     </aside>
@@ -551,25 +543,12 @@ export function JavaPage({
       <div className="java-layout">
         <JavaDirectory navigate={navigate} activeTopic={topicId} mode={mode} />
         <div className="java-main">
-          <PageHeading
-            title={title}
-            description={
-              topic
-                ? topic.description
-                : mode === 'advanced'
-                  ? '高并发、分布式与性能调优，在真实约束中理解系统的取舍。'
-                  : mode === 'interviews'
-                    ? '围绕具体问题，组织原理、边界与回答思路。'
-                    : mode === 'updates'
-                      ? '沿着修改记录，回看新补充的知识。'
-                      : undefined
-            }
-          />
+          <PageHeading title={title} />
           <label className="inline-search java-search">
             <MagnifyingGlass size={18} />
             <input
               aria-label="搜索知识笔记"
-              placeholder={topic ? '搜索这个主题' : '搜索知识笔记'}
+              placeholder="搜索"
               value={query}
               onChange={(e) => update({ q: e.target.value, page: '' })}
             />
@@ -587,7 +566,6 @@ export function JavaPage({
                         <span className="topic-index-number">{String(i + 1).padStart(2, '0')}</span>
                         <div>
                           <h2>{t.name}</h2>
-                          <p>{t.description}</p>
                         </div>
                         <span className="topic-count">{count ? `${count} 篇笔记` : '待整理'}</span>
                         <ArrowUpRight size={20} />
@@ -595,11 +573,6 @@ export function JavaPage({
                     </TopicSpotlight>
                   );
                 })}
-              </div>
-              <div className="java-update-link">
-                <Link to="/java/updates" navigate={navigate}>
-                  查看最近更新 <ArrowRight size={18} />
-                </Link>
               </div>
             </>
           ) : entries.length ? (
@@ -714,7 +687,7 @@ function DailyOverview({ navigate, params }: { navigate: Navigate; params: URLSe
                   {i.date.slice(0, 7).replace('-', ' / ')}
                 </time>
                 <div>
-                  <h2>{i.title}</h2>
+                  <h2>{i.headline}</h2>
                 </div>
                 <ArrowUpRight size={23} />
               </Link>

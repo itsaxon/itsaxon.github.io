@@ -25,6 +25,7 @@ export interface Article extends ArticleSource {
 export interface DailyIssue {
   date: string;
   title: string;
+  headline: string;
   summary: string;
   articleIds: string[];
   supplied?: boolean;
@@ -363,10 +364,24 @@ export const javaTopics = [
   { id: 'database', name: '数据库', description: '索引、事务与数据访问' },
   { id: 'distributed', name: '分布式系统', description: '幂等、重试与服务协作' },
 ];
+function firstEventHeadline(markdown: string): string {
+  const headings = [...markdown.matchAll(/^(#{1,6})\s+(.+?)\s*$/gm)];
+  const sectionIndex = headings.findIndex((heading) => heading[2].includes('今日重大事件'));
+  if (sectionIndex >= 0) {
+    const sectionLevel = headings[sectionIndex][1].length;
+    const event = headings[sectionIndex + 1];
+    if (event && event[1].length > sectionLevel) {
+      return event[2].replace(/^\d+[.、．]\s*/, '').replace(/\*\*|__/g, '').trim();
+    }
+  }
+  return markdown.match(/^#\s+(.+)$/m)?.[1].trim() || '科技情报日报';
+}
+
 export const issues: DailyIssue[] = Object.entries(dailyMarkdown)
   .map(([date, markdown]) => ({
     date,
     title: markdown.match(/^#\s+(.+)$/m)?.[1].trim() || '科技情报日报',
+    headline: firstEventHeadline(markdown),
     summary: '从重大事件到产业动态、开发者关注与数据指标，八个栏目记录一天的科技与商业变化。',
     articleIds: [],
     supplied: true,

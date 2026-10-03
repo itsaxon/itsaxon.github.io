@@ -5,7 +5,7 @@ import type { ReactNode, ButtonHTMLAttributes } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import Magnet from './react-bits/magnet';
 import AnimatedContent from './react-bits/animated-content';
-import SpotlightCard from './react-bits/spotlight-card';
+import AnimatedListItem from './react-bits/animated-list';
 import ClickSpark from './react-bits/click-spark';
 import { useMobileEffectsDisabled, useTheme } from '@/lib/preferences';
 
@@ -35,9 +35,9 @@ export function TopicSpotlight({ children }: { children: ReactNode }) {
   return disabled ? (
     <div className="topic-spotlight">{children}</div>
   ) : (
-    <SpotlightCard className="topic-spotlight" spotlightColor="rgba(223, 146, 117, 0.32)">
+    <AnimatedListItem>
       {children}
-    </SpotlightCard>
+    </AnimatedListItem>
   );
 }
 export function SparkControls({ children }: { children: ReactNode }) {

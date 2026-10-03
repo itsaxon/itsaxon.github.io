@@ -18,6 +18,7 @@ import { Link } from './navigation';
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogClose } from './ui/dialog';
 
 const Settings = createContext({ playing: false });
+const categoryNames = { 博客: '网络日志', Java: 'Java 知识库', AI: 'AI 日报' };
 export const useSettings = () => useContext(Settings);
 
 function SearchDialog() {
@@ -54,13 +55,13 @@ function SearchDialog() {
         >
           <DialogTitle>寻找一点灵感。</DialogTitle>
           <DialogDescription className="sr-only">
-            搜索网络日志、Java 知识与 AI 阅读，使用 Escape 关闭。
+            搜索网络日志、Java 知识库与 AI 日报，使用 Escape 关闭。
           </DialogDescription>
           <label className="search-field">
             <MagnifyingGlass size={22} />
             <input
               aria-label="搜索文章关键词"
-              placeholder="搜索博客、Java 知识、AI 阅读…"
+              placeholder="搜索网络日志、Java 知识库、AI 日报…"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
             />
@@ -74,7 +75,7 @@ function SearchDialog() {
               <DialogClose asChild key={article.id}>
                 <Link to={articleUrl(article)}>
                   <span>
-                    {article.category} · {article.type}
+                    {categoryNames[article.category]} · {article.type}
                   </span>
                   <h3>{article.title}</h3>
                   <ArrowUpRight size={20} />
