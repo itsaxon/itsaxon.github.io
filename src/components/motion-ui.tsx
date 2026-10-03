@@ -21,9 +21,9 @@ export function ListEntrance({ children, index = 0 }: { children: ReactNode; ind
   ) : (
     <AnimatedContent
       className="list-entrance"
-      distance={16}
-      duration={0.5}
-      delay={Math.min(index, 4) * 0.07}
+      distance={28}
+      duration={0.65}
+      delay={0.15 + Math.min(index, 4) * 0.12}
       animateOpacity
     >
       {children}
@@ -35,7 +35,7 @@ export function TopicSpotlight({ children }: { children: ReactNode }) {
   return disabled ? (
     <div className="topic-spotlight">{children}</div>
   ) : (
-    <SpotlightCard className="topic-spotlight" spotlightColor="rgba(223, 146, 117, 0.15)">
+    <SpotlightCard className="topic-spotlight" spotlightColor="rgba(223, 146, 117, 0.32)">
       {children}
     </SpotlightCard>
   );
@@ -50,9 +50,9 @@ export function SparkControls({ children }: { children: ReactNode }) {
       className="header-tools"
       sparkColor={dark ? '#df9275' : '#b65a40'}
       sparkCount={6}
-      sparkSize={5}
-      sparkRadius={14}
-      duration={300}
+      sparkSize={8}
+      sparkRadius={22}
+      duration={450}
     >
       {children}
     </ClickSpark>
