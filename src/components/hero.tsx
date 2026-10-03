@@ -3,12 +3,13 @@ import { motion } from 'motion/react';
 import { ArrowRight } from '@phosphor-icons/react';
 import SpecularButton from './react-bits/specular-button';
 import DotGrid from './react-bits/dot-grid';
-import { useTheme } from '@/lib/preferences';
+import { useTheme, useMobileEffectsDisabled } from '@/lib/preferences';
 import { HeroArt } from './hero-art';
 import { useSettings } from './site-shell';
 export function Hero() {
   const { playing } = useSettings();
   const dark = useTheme() === 'dark';
+  const mobileEffectsDisabled = useMobileEffectsDisabled();
   const startReading = () => {
     const target = document.getElementById('reading');
     if (!target) return;
@@ -50,6 +51,7 @@ export function Hero() {
           <span>让思考成形</span>
         </h1>
         <SpecularButton
+          staticMode={mobileEffectsDisabled}
           size="md"
           radius={10}
           tint={dark ? '#31312a' : '#303029'}

@@ -12,6 +12,7 @@ import { Renderer, Program, Mesh, Triangle, Color } from 'ogl';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 export interface SpecularButtonProps {
+  staticMode?: boolean;
   children?: ReactNode;
   size?: ButtonSize;
   radius?: number;
@@ -120,6 +121,7 @@ void main() {
 `;
 
 const SpecularButton = ({
+  staticMode = false,
   children = 'Get Started',
   size = 'lg',
   radius = 18,
@@ -165,7 +167,7 @@ const SpecularButton = ({
   useEffect(() => {
     const btn = btnRef.current;
     const fx = fxRef.current;
-    if (!btn || !fx) return;
+    if (!btn || !fx || staticMode) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const renderer = new Renderer({ alpha: true, premultipliedAlpha: true, antialias: false, dpr });
@@ -302,7 +304,7 @@ const SpecularButton = ({
       if (gl.canvas.parentNode === fx) fx.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, []);
+  }, [staticMode]);
 
   return (
     <button
@@ -332,4 +334,3 @@ const SpecularButton = ({
 };
 
 export default SpecularButton;
-

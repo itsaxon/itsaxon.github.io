@@ -3093,6 +3093,12 @@ summary:focus-visible {
   align-items: center;
   gap: 28px;
 }
+.veil-static {
+  width: 100%;
+  height: 100%;
+  background: var(--accent);
+  mask: url('/veil-static.svg') center / contain no-repeat;
+}
 @media (max-width: 767px) {
   .tech-title > .tech-title-line {
     height: 68px;

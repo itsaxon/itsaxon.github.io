@@ -63,3 +63,17 @@ export function useSystemReducedMotion() {
     () => true,
   );
 }
+
+const mobileEffectsQuery = '(max-width: 767px), (pointer: coarse)';
+function subscribeMobileEffects(callback: () => void) {
+  const media = window.matchMedia(mobileEffectsQuery);
+  media.addEventListener('change', callback);
+  return () => media.removeEventListener('change', callback);
+}
+export function useMobileEffectsDisabled() {
+  return useSyncExternalStore(
+    subscribeMobileEffects,
+    () => window.matchMedia(mobileEffectsQuery).matches,
+    () => true,
+  );
+}

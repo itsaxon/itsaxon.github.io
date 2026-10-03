@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('home, persistent theme and reduced motion', async ({ page }) => {
+test('home, persistent theme and reduced motion', async ({ page, isMobile }) => {
   await page.emulateMedia({ reducedMotion: 'reduce', colorScheme: 'light' });
   const errors: string[] = [];
   page.on('pageerror', (error) => errors.push(error.message));
@@ -8,7 +8,9 @@ test('home, persistent theme and reduced motion', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toContainText('为知识留白');
   await expect(page.locator('html')).toHaveAttribute('data-motion', 'paused');
   await expect(page.locator('.motion-controls')).toHaveCount(0);
-  await expect(page.locator('.dither-veil canvas')).toHaveCount(1);
+  await expect(page.locator('.dither-veil canvas')).toHaveCount(isMobile ? 0 : 1);
+  await expect(page.locator('.reading-specular canvas')).toHaveCount(isMobile ? 0 : 1);
+  await expect(page.locator('.veil-static')).toHaveCount(isMobile ? 1 : 0);
   await expect(page.locator('.art-caption')).toHaveCount(0);
   await expect(page.locator('.floating-header .brand-en')).toHaveText('Margin');
   await expect(page.locator('.hero-title .underline')).toHaveCount(0);
