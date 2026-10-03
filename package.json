@@ -1,26 +1,44 @@
 {
-  "name": "itsaxon.github.io",
-  "packageManager": "pnpm@10.25.0",
-  "description": "itsaxon.github.io",
-  "version": "1.0.0",
-  "license": "MIT",
-  "type": "module",
+  "name": "margin-personal-site",
+  "version": "2.0.0",
+  "private": true,
   "scripts": {
-    "docs:build": "vuepress-vite build src",
-    "docs:clean-dev": "vuepress-vite dev src --clean-cache",
-    "docs:dev": "vuepress-vite dev src",
-    "docs:update-package": "pnpm dlx vp-update"
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "npm run content && next build",
+    "content": "node scripts/generate-content.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test:e2e": "playwright test",
+    "preview": "node scripts/serve-static.mjs",
+    "format": "prettier --write src scripts tests *.ts *.mjs *.json"
+  },
+  "dependencies": {
+    "@phosphor-icons/react": "^2.1.0",
+    "clsx": "^2.1.1",
+    "gsap": "^3.15.0",
+    "motion": "^12.0.0",
+    "next": "16.3.8",
+    "ogl": "^1.0.11",
+    "radix-ui": "^1.6.7",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "tailwind-merge": "^3.0.0"
   },
   "devDependencies": {
-    "@vuepress/bundler-vite": "2.0.0-rc.26",
-    "sass-embedded": "^1.97.0",
-    "vue": "^3.5.26",
-    "vuepress": "2.0.0-rc.26",
-    "vuepress-theme-hope": "2.0.0-rc.99"
+    "@playwright/test": "^1.63.0",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.3.8",
+    "prettier": "^3.9.9",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
+  "allowScripts": {
+    "unrs-resolver@1.12.2": true
   }
 }

@@ -1,0 +1,9 @@
+node_modules
+.next
+out
+package-lock.json
+test-results
+playwright-report
+src/lib/generated-content.ts
+content
+public/reports
