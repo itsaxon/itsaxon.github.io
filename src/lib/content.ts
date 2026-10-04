@@ -366,8 +366,9 @@ export const javaTopics = [
 ];
 function firstEventHeadline(markdown: string): string {
   const headings = [...markdown.matchAll(/^(#{1,6})\s+(.+?)\s*$/gm)];
-  const sectionIndex = headings.findIndex((heading) => heading[2].includes('今日重大事件'));
-  if (sectionIndex >= 0) {
+  for (const sectionName of ['今日重大事件', '人工智能产业动态']) {
+    const sectionIndex = headings.findIndex((heading) => heading[2].includes(sectionName));
+    if (sectionIndex < 0) continue;
     const sectionLevel = headings[sectionIndex][1].length;
     const event = headings[sectionIndex + 1];
     if (event && event[1].length > sectionLevel) {
