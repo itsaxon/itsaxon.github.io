@@ -2955,8 +2955,11 @@ summary:focus-visible {
     max-width: 100%;
     padding: 0 5px 0 16px;
   }
-  .floating-header .brand-en {
+  .floating-header .brand-cn {
     display: none;
+  }
+  .floating-header .brand-en {
+    display: inline;
   }
   .header-divider {
     display: none;

@@ -140,7 +140,7 @@ function Header() {
             <Link className="brand" to="/" aria-label="留白首页">
               <MarginMark />
               <span>
-                留白<span className="brand-en"> Margin</span>
+                <span className="brand-cn">留白</span><span className="brand-en"> Margin</span>
               </span>
             </Link>
             <span className="header-divider" aria-hidden="true">
