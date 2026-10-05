@@ -1,5 +1,13 @@
 @import 'tailwindcss';
 
+@font-face {
+  font-family: 'Cormorant Garamond';
+  src: url('/fonts/CormorantGaramond-Variable.ttf') format('truetype');
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+}
+
 /* React Bits Cubes artwork: isolated from Motion's transform targets. */
 .hero-art.cubes-art {
   width: 350px;
@@ -143,8 +151,9 @@ button {
   color: var(--accent);
 }
 .brand-en {
-  font-family: var(--serif);
-  @apply font-normal;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-synthesis: none;
+  font-weight: 700;
   font-size: 18px;
   margin-left: 3px;
 }
@@ -2879,7 +2888,13 @@ summary:focus-visible {
   gap: 8px;
 }
 .floating-header .brand-en {
-  font-size: 15px;
+  font-size: 16px;
+  margin-left: 3px;
+  position: relative;
+  top: -2px;
+}
+.floating-header .brand-cn {
+  font-weight: 400;
 }
 .floating-header .margin-mark {
   transform: scale(0.7);
