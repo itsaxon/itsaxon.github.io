@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 export const metadata: Metadata = {
-  title: '最近更新',
-  alternates: { canonical: '/java/updates/' },
+  title: '回顾与整理',
+  alternates: { canonical: '/java/review/' },
 };
 import { Suspense } from 'react';
 import { JavaView } from '@/components/page-views';
@@ -14,7 +14,7 @@ export default function Page() {
         </p>
       }
     >
-      <JavaView mode="updates" />
+      <JavaView mode="review" />
     </Suspense>
   );
 }

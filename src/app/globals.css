@@ -2371,13 +2371,23 @@ select {
 .about-copy p + p {
   margin-top: 16px;
 }
+.portal-sub-links {
+  margin-top: 35px;
+  padding-top: 25px;
+  border-top: 1px solid var(--line);
+  @apply flex;
+  @apply flex-col;
+  gap: 16px;
+}
+.portal-sub-links .advanced-link {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
 .advanced-link {
   @apply flex;
   @apply items-center;
   gap: 16px;
-  margin-top: 35px;
-  padding-top: 25px;
-  border-top: 1px solid var(--line);
   font-size: 16px;
 }
 .advanced-link span {
@@ -2395,6 +2405,121 @@ select {
   .advanced-link span {
     font-size: 10px;
   }
+}
+.review-board {
+  @apply flex;
+  @apply flex-col;
+  gap: 48px;
+}
+.review-section h2 {
+  font-size: 21px;
+  margin-bottom: 12px;
+}
+.review-hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+  max-width: 560px;
+  line-height: 1.8;
+}
+.review-empty {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.8;
+}
+.review-card {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+.review-card h3 {
+  font-size: 17px;
+  @apply font-normal;
+  line-height: 1.6;
+}
+.review-card a:hover h3 {
+  color: var(--accent);
+}
+.review-meta {
+  @apply flex;
+  @apply flex-wrap;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 10px;
+}
+.review-actions {
+  @apply flex;
+  @apply flex-wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+.review-actions button {
+  @apply inline-flex;
+  @apply items-center;
+  gap: 8px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 8px 14px;
+  font-size: 12px;
+  color: var(--text);
+}
+.review-actions button:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.review-actions button small {
+  font-size: 10px;
+  color: var(--muted);
+}
+.pending-list {
+  @apply flex;
+  @apply flex-col;
+}
+.pending-list li {
+  @apply flex;
+  @apply items-center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.pending-list li a:hover {
+  color: var(--accent);
+}
+.pending-list time {
+  font-size: 11px;
+  color: var(--muted);
+  margin-left: auto;
+}
+.pending-list li.pending-stale a {
+  color: var(--accent);
+}
+.pending-list li small {
+  font-size: 10px;
+  color: var(--accent);
+}
+.review-toggle {
+  @apply inline-flex;
+  @apply items-center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin-left: auto;
+}
+.review-toggle:hover:not(:disabled) {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.review-toggle.in-queue {
+  color: var(--accent);
+}
+.review-toggle:disabled {
+  @apply cursor-default;
 }
 .report-layout {
   @apply grid;

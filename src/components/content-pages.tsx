@@ -12,8 +12,29 @@ import {
   Sparkle,
   CaretDown,
   CalendarBlank,
+  ArrowsClockwise,
 } from '@phosphor-icons/react';
-import { articles, javaTopics, issues, BLOG_PAGE_SIZE, articleUrl } from '@/lib/content';
+import {
+  articles,
+  javaTopics,
+  issues,
+  BLOG_PAGE_SIZE,
+  articleUrl,
+  PENDING_TAG,
+  PENDING_LIMIT,
+  PENDING_STALE_DAYS,
+} from '@/lib/content';
+import {
+  useReviewQueue,
+  isDue,
+  isInReviewQueue,
+  isTaggedReview,
+  markReviewed,
+  toggleReview,
+  FAMILIARITY_LABELS,
+  REVIEW_INTERVAL_DAYS,
+  type Familiarity,
+} from '@/lib/review';
 import { Link } from './navigation';
 import { Reveal, ListEntrance, TopicSpotlight } from './motion-ui';
 import ReactMarkdown from 'react-markdown';
@@ -170,15 +191,23 @@ export function HomeContent({ navigate }: { navigate: Navigate }) {
         </div>
         <div className="portal-java">
           <div className="topic-shortcuts">
-            {javaTopics.slice(0, 4).map((t) => (
-              <Link to={`/java/topics/${t.id}`} navigate={navigate} key={t.id}>
-                <span>{t.name}</span>
-              </Link>
-            ))}
+            {javaTopics
+              .filter((t) => articles.some((a) => a.category === 'Java' && a.topic === t.id))
+              .slice(0, 4)
+              .map((t) => (
+                <Link to={`/java/topics/${t.id}`} navigate={navigate} key={t.id}>
+                  <span>{t.name}</span>
+                </Link>
+              ))}
           </div>
-          <Link className="advanced-link" to="/java/advanced" navigate={navigate}>
-            进阶知识 <ArrowRight size={18} />
-          </Link>
+          <div className="portal-sub-links">
+            <Link className="advanced-link" to="/java/review" navigate={navigate}>
+              回顾与整理 <ArrowRight size={18} />
+            </Link>
+            <Link className="advanced-link" to="/java/interviews" navigate={navigate}>
+              面试专题 <ArrowRight size={18} />
+            </Link>
+          </div>
         </div>
       </Reveal>
       <Reveal className="portal-row daily-portal">
@@ -396,6 +425,9 @@ export function JavaDirectory({
   mode?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const domains = javaTopics.filter(
+    (t) => t.id === activeTopic || articles.some((a) => a.category === 'Java' && a.topic === t.id),
+  );
   return (
     <aside className={`java-sidebar ${open ? 'directory-open' : ''}`} aria-label="Java 知识目录">
       <button className="directory-toggle" onClick={() => setOpen(!open)} aria-expanded={open}>
@@ -407,9 +439,9 @@ export function JavaDirectory({
           to="/java"
           navigate={navigate}
         >
-          知识总览
+          知识体系
         </Link>
-        {javaTopics.map((t) => {
+        {domains.map((t) => {
           const entries = articles.filter((a) => a.category === 'Java' && a.topic === t.id);
           const preview = entries.slice(0, 6);
           if (activeArticle && !preview.some((a) => a.id === activeArticle)) {
@@ -420,7 +452,6 @@ export function JavaDirectory({
             <details key={t.id} open={activeTopic === t.id}>
               <summary>
                 <span>{t.name}</span>
-                {!entries.length && <small>待整理</small>}
               </summary>
               <Link
                 to={`/java/topics/${t.id}`}
@@ -450,11 +481,11 @@ export function JavaDirectory({
         })}
         <div className="directory-special">
           <Link
-            className={mode === 'advanced' ? 'current' : ''}
-            to="/java/advanced"
+            className={mode === 'review' ? 'current' : ''}
+            to="/java/review"
             navigate={navigate}
           >
-            进阶知识
+            回顾与整理
           </Link>
           <Link
             className={mode === 'interviews' ? 'current' : ''}
@@ -486,16 +517,9 @@ export function JavaPage({
   const entries = articles.filter(
     (a) =>
       a.category === 'Java' &&
-      (topic
-        ? a.topic === topic.id
-        : mode === 'advanced'
-          ? a.advanced === true
-          : mode === 'interviews'
-            ? a.type === '面试专题'
-            : true) &&
+      (topic ? a.topic === topic.id : mode === 'interviews' ? a.type === '面试专题' : true) &&
       (a.title + a.desc + a.type).toLowerCase().includes(query.toLowerCase()),
   );
-  if (mode === 'updates') entries.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
   const totalPages = Math.max(1, Math.ceil(entries.length / 4)),
     page = pageNumber(params, totalPages);
   const base = topic ? `/java/topics/${topic.id}` : mode === 'overview' ? '/java' : `/java/${mode}`;
@@ -509,15 +533,13 @@ export function JavaPage({
   };
   const title = topic
     ? topic.name
-    : mode === 'advanced'
-      ? '进阶知识'
-      : mode === 'interviews'
-        ? '面试，从理解开始。'
-        : mode === 'updates'
-          ? '最近更新'
-          : query
-            ? '搜索知识'
-            : 'Java 知识库';
+    : mode === 'interviews'
+      ? '面试，从理解开始。'
+      : mode === 'review'
+        ? '回顾与整理'
+        : query
+          ? '搜索知识'
+          : 'Java 知识体系';
   return (
     <section className="content-page java-page">
       <Breadcrumb navigate={navigate}>
@@ -527,14 +549,7 @@ export function JavaPage({
               Java 知识库
             </Link>
             <span>/</span>
-            <span>
-              {topic?.name ||
-                (mode === 'advanced'
-                  ? '进阶知识'
-                  : mode === 'interviews'
-                    ? '面试专题'
-                    : '最近更新')}
-            </span>
+            <span>{topic?.name || (mode === 'interviews' ? '面试专题' : '回顾与整理')}</span>
           </>
         ) : (
           <span>Java 知识库</span>
@@ -543,78 +558,208 @@ export function JavaPage({
       <div className="java-layout">
         <JavaDirectory navigate={navigate} activeTopic={topicId} mode={mode} />
         <div className="java-main">
-          <PageHeading title={title} />
-          <label className="inline-search java-search">
-            <MagnifyingGlass size={18} />
-            <input
-              aria-label="搜索知识笔记"
-              placeholder="搜索"
-              value={query}
-              onChange={(e) => update({ q: e.target.value, page: '' })}
-            />
-          </label>
-          {mode === 'overview' && !topic && !query ? (
-            <>
-              <div className="topic-index">
-                {javaTopics.map((t, i) => {
-                  const count = articles.filter(
-                    (a) => a.category === 'Java' && a.topic === t.id,
-                  ).length;
-                  return (
-                    <TopicSpotlight key={t.id}>
-                      <Link to={`/java/topics/${t.id}`} navigate={navigate}>
-                        <span className="topic-index-number">{String(i + 1).padStart(2, '0')}</span>
-                        <div>
-                          <h2>{t.name}</h2>
-                        </div>
-                        <span className="topic-count">{count ? `${count} 篇笔记` : '待整理'}</span>
-                        <ArrowUpRight size={20} />
-                      </Link>
-                    </TopicSpotlight>
-                  );
-                })}
-              </div>
-            </>
-          ) : entries.length ? (
-            <>
-              <div className="list-summary">
-                <span>
-                  {entries.length} 篇{mode === 'interviews' ? '面试笔记' : '知识笔记'}
-                </span>
-                <span>{mode === 'updates' ? '按更新时间排列' : '按主题阅读'}</span>
-              </div>
-              <ArticleList items={entries.slice((page - 1) * 4, page * 4)} navigate={navigate} />
-              <Pager
-                page={page}
-                totalPages={totalPages}
-                label="知识笔记分页"
-                onPage={(p) => {
-                  update({ page: p });
-                  document.querySelector('.java-search')?.scrollIntoView({ block: 'start' });
-                }}
-              />
-            </>
+          <PageHeading title={title} description={topic?.description} />
+          {mode === 'review' && !topic ? (
+            <ReviewBoard navigate={navigate} />
           ) : (
-            <EmptyContent
-              title={query ? '没有找到匹配的笔记' : '这个主题，还在整理。'}
-              description={
-                query ? '换一个关键词，或清除搜索。' : '已预留目录位置，新的笔记会在这里归档。'
-              }
-            >
-              {query ? (
-                <button className="secondary" onClick={() => update({ q: '', page: '' })}>
-                  清除搜索
-                </button>
+            <>
+              <label className="inline-search java-search">
+                <MagnifyingGlass size={18} />
+                <input
+                  aria-label="搜索知识笔记"
+                  placeholder="搜索"
+                  value={query}
+                  onChange={(e) => update({ q: e.target.value, page: '' })}
+                />
+              </label>
+              {mode === 'overview' && !topic && !query ? (
+                <div className="topic-index">
+                  {javaTopics
+                    .map((t, i) => ({
+                      ...t,
+                      index: i,
+                      count: articles.filter((a) => a.category === 'Java' && a.topic === t.id)
+                        .length,
+                    }))
+                    .filter((t) => t.count > 0)
+                    .map((t) => (
+                      <TopicSpotlight key={t.id}>
+                        <Link to={`/java/topics/${t.id}`} navigate={navigate}>
+                          <span className="topic-index-number">
+                            {String(t.index + 1).padStart(2, '0')}
+                          </span>
+                          <div>
+                            <h2>{t.name}</h2>
+                          </div>
+                          <span className="topic-count">{t.count} 篇笔记</span>
+                          <ArrowUpRight size={20} />
+                        </Link>
+                      </TopicSpotlight>
+                    ))}
+                </div>
+              ) : entries.length ? (
+                <>
+                  <div className="list-summary">
+                    <span>
+                      {entries.length} 篇{mode === 'interviews' ? '面试笔记' : '知识笔记'}
+                    </span>
+                    <span>按主题阅读</span>
+                  </div>
+                  <ArticleList
+                    items={entries.slice((page - 1) * 4, page * 4)}
+                    navigate={navigate}
+                  />
+                  <Pager
+                    page={page}
+                    totalPages={totalPages}
+                    label="知识笔记分页"
+                    onPage={(p) => {
+                      update({ page: p });
+                      document.querySelector('.java-search')?.scrollIntoView({ block: 'start' });
+                    }}
+                  />
+                </>
               ) : (
-                <Link className="secondary" to="/java" navigate={navigate}>
-                  回到知识总览 <ArrowRight size={17} />
-                </Link>
+                <EmptyContent
+                  title={query ? '没有找到匹配的笔记' : '这个主题，还在整理。'}
+                  description={
+                    query ? '换一个关键词，或清除搜索。' : '已预留目录位置，新的笔记会在这里归档。'
+                  }
+                >
+                  {query ? (
+                    <button className="secondary" onClick={() => update({ q: '', page: '' })}>
+                      清除搜索
+                    </button>
+                  ) : (
+                    <Link className="secondary" to="/java" navigate={navigate}>
+                      回到知识体系 <ArrowRight size={17} />
+                    </Link>
+                  )}
+                </EmptyContent>
               )}
-            </EmptyContent>
+            </>
           )}
         </div>
       </div>
     </section>
+  );
+}
+
+function ReviewBoard({ navigate }: { navigate: Navigate }) {
+  const queue = useReviewQueue();
+  const [showAllDue, setShowAllDue] = useState(false);
+  const javaArticles = articles.filter((a) => a.category === 'Java');
+  const due = javaArticles
+    .filter((a) => isDue(a, queue))
+    .sort((a, b) => (queue[a.id]?.next || '').localeCompare(queue[b.id]?.next || ''));
+  const visibleDue = showAllDue ? due : due.slice(0, 3);
+  const [cutoff] = useState(() =>
+    new Date(Date.now() - PENDING_STALE_DAYS * 86400000).toISOString().slice(0, 10),
+  );
+  const pending = javaArticles.filter((a) => a.tags?.includes(PENDING_TAG));
+  const confusing = javaArticles.filter((a) => a.tags?.includes('易混淆'));
+  const recent = [...javaArticles]
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+    .slice(0, 6);
+  return (
+    <div className="review-board">
+      <section className="review-section" aria-label="到期回顾">
+        <h2>到期回顾</h2>
+        <p className="review-hint">
+          只回顾重点、易混淆和手动加入的内容；回顾后按熟悉程度安排下次回顾。
+        </p>
+        {due.length ? (
+          <>
+            {visibleDue.map((a) => {
+              const record = queue[a.id];
+              return (
+                <div className="review-card" key={a.id}>
+                  <Link to={articleUrl(a)} navigate={navigate}>
+                    <h3>{a.title}</h3>
+                  </Link>
+                  <div className="review-meta">
+                    <span>
+                      {record?.last ? `上次回顾 ${record.last.replaceAll('-', '.')}` : '尚未回顾'}
+                    </span>
+                    {record?.level && <span>{FAMILIARITY_LABELS[record.level]}</span>}
+                    {record?.next && <span>应回顾 {record.next.replaceAll('-', '.')}</span>}
+                  </div>
+                  <div className="review-actions" role="group" aria-label="回顾自评">
+                    {(Object.keys(FAMILIARITY_LABELS) as Familiarity[]).map((level) => (
+                      <button key={level} onClick={() => markReviewed(a.id, level)}>
+                        {FAMILIARITY_LABELS[level]}
+                        <small>{REVIEW_INTERVAL_DAYS[level]} 天后</small>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+            {due.length > 3 && (
+              <button className="secondary" onClick={() => setShowAllDue(!showAllDue)}>
+                {showAllDue ? '收起' : `查看全部 ${due.length} 篇`}
+              </button>
+            )}
+          </>
+        ) : (
+          <p className="review-empty">
+            今天没有到期的回顾。可以从文章页把生疏的内容加入回顾队列。
+          </p>
+        )}
+      </section>
+      <section className="review-section" aria-label="待整理">
+        <h2>待整理</h2>
+        <p className="review-hint">
+          上限 {PENDING_LIMIT} 条；停留超过 {PENDING_STALE_DAYS}{' '}
+          天会突出显示，归档、合并或舍弃后再收录新内容。
+        </p>
+        {pending.length ? (
+          <ul className="pending-list">
+            {pending.map((a) => (
+              <li key={a.id} className={a.publishedAt <= cutoff ? 'pending-stale' : ''}>
+                <Link to={articleUrl(a)} navigate={navigate}>
+                  {a.title}
+                </Link>
+                <time dateTime={a.publishedAt}>{a.publishedAt.replaceAll('-', '.')}</time>
+                {a.publishedAt <= cutoff && <small>停留超过 {PENDING_STALE_DAYS} 天</small>}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="review-empty">待整理区为空。</p>
+        )}
+      </section>
+      <section className="review-section" aria-label="易混淆知识">
+        <h2>易混淆知识</h2>
+        {confusing.length ? (
+          <ArticleList compact items={confusing} navigate={navigate} />
+        ) : (
+          <p className="review-empty">暂无标记为易混淆的知识。</p>
+        )}
+      </section>
+      <section className="review-section" aria-label="最近更新">
+        <h2>最近更新</h2>
+        <ArticleList compact items={recent} navigate={navigate} />
+      </section>
+    </div>
+  );
+}
+
+function ReviewToggle({ article }: { article: Article }) {
+  const queue = useReviewQueue();
+  const tagged = isTaggedReview(article);
+  const inQueue = isInReviewQueue(article, queue);
+  return (
+    <button
+      className={`review-toggle ${inQueue ? 'in-queue' : ''}`}
+      disabled={tagged}
+      title={tagged ? '已通过标签加入回顾' : undefined}
+      aria-pressed={inQueue}
+      onClick={() => toggleReview(article.id)}
+    >
+      <ArrowsClockwise size={15} />
+      {inQueue ? (tagged ? '已在回顾队列' : '移出回顾队列') : '加入回顾'}
+    </button>
   );
 }
 
@@ -869,6 +1014,7 @@ export function ArticlePage({ article, navigate }: { article: Article; navigate:
           <div className="detail-meta">
             <span>{article.type}</span>
             <time dateTime={article.publishedAt}>{article.publishedAt.replaceAll('-', '.')}</time>
+            {article.category === 'Java' && <ReviewToggle article={article} />}
           </div>
           <h1 tabIndex={-1}>{article.title}</h1>
           <div className="detail-body markdown-body">

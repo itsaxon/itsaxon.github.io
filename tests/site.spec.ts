@@ -80,21 +80,40 @@ test('search dialog supports keyboard, close and result navigation', async ({ pa
   await expect(page.getByRole('heading', { level: 1 })).toContainText('HashMap');
 });
 
-test('Java topics, empty states and advanced notes', async ({ page, isMobile }) => {
+test('Java domains, empty states and review board', async ({ page, isMobile }) => {
   await page.goto('/java/');
-  await expect(page.locator('.topic-index .topic-spotlight a')).toHaveCount(7);
-  await page.locator('.topic-index .topic-spotlight a').filter({ hasText: 'Spring 生态' }).click();
-  await expect(page.getByRole('heading', { name: '这个主题，还在整理。' })).toBeVisible();
-  await page.goto('/java/advanced/');
-  await expect(page.locator('.page-articles .article')).toHaveCount(3);
-  await page.locator('.page-articles .article').first().click();
-  await expect(page).toHaveURL(/articles\/concurrency-backpressure/);
-  await expect(page.locator('.detail-body section')).toHaveCount(3);
+  await expect(page.locator('.topic-index .topic-spotlight a')).toHaveCount(10);
+  await page.locator('.topic-index .topic-spotlight a').filter({ hasText: 'Java 核心' }).click();
+  await expect(page.locator('.list-summary')).toContainText('26 篇知识笔记');
+  await expect(page.locator('.page-articles .article')).toHaveCount(4);
+  await page.goto('/java/topics/spring/');
+  await expect(page.locator('.list-summary')).toContainText('2 篇知识笔记');
+  await page.goto('/java/topics/spring/?q=不存在的内容');
+  await expect(page.getByRole('heading', { name: '没有找到匹配的笔记' })).toBeVisible();
+  await page.goto('/java/review/');
+  await expect(page.getByRole('heading', { name: '回顾与整理', level: 1 })).toBeVisible();
+  await expect(page.locator('.review-card')).toHaveCount(3);
+  await page.getByRole('button', { name: /查看全部 17 篇/ }).click();
+  await expect(page.locator('.review-card')).toHaveCount(17);
+  await page
+    .locator('.review-card')
+    .first()
+    .getByRole('button', { name: /能清楚解释与应用/ })
+    .click();
+  await expect(page.locator('.review-card')).toHaveCount(16);
+  await expect(page.getByRole('button', { name: /收起/ })).toBeVisible();
   await page.reload();
-  await expect(page.locator('.detail-body section')).toHaveCount(3);
+  await expect(page.locator('.review-card')).toHaveCount(3);
+  await expect(page.getByRole('button', { name: /查看全部 16 篇/ })).toBeVisible();
+  await page.goto('/java/interviews/');
+  await expect(page.getByRole('heading', { name: '这个主题，还在整理。' })).toBeVisible();
+  await page.goto('/articles/hashmap/');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('HashMap');
+  await expect(page.locator('.detail-body section')).toHaveCount(5);
+  await expect(page.getByRole('button', { name: /已在回顾队列/ })).toBeDisabled();
   if (isMobile) {
     await page.getByRole('button', { name: '知识目录', exact: true }).click();
-    await expect(page.getByRole('link', { name: '知识总览', exact: true })).toBeVisible();
+    await expect(page.getByRole('link', { name: '知识体系', exact: true })).toBeVisible();
     await page.getByRole('button', { name: '本文目录', exact: true }).click();
     await expect(page.locator('.outline-links')).toBeVisible();
   }
